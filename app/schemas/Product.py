@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from .Variant import Variant
-
+from typing import List
 class Product(BaseModel):
    name: str
    uom: str
@@ -17,7 +17,7 @@ class Product(BaseModel):
    
 class ProductResponse(Product):
    id: int
-   variant: Variant
+   variant: List[Variant]
    
 class ProductBody(Product):
    variant_id: int
