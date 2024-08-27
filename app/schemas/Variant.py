@@ -9,6 +9,4 @@ class Variant(BaseModel):
    product_id: Optional[int]
    purchase_price: float
    type: str
-   created_at: datetime
-   updated_at: datetime
    config_attributes: Optional[dict] 
