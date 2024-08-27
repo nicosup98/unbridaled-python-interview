@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 from .Variant import Variant
 from typing import List
+from decimal import Decimal
 class Product(BaseModel):
+   id: Optional[int]
    name: str
    uom: str
    category_name: str
@@ -12,12 +14,8 @@ class Product(BaseModel):
    purchase_uom_conversion_rate: float
    batch_tracked: bool
    additional_info: Text
-   created_at: datetime
-   updated_at: datetime
    
-class ProductResponse(Product):
-   id: int
-   variant: List[Variant]
+   
    
 class ProductBody(Product):
-   variant_id: int
+   variants_id: List[Variant]
