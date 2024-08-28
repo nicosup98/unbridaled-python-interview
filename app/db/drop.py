@@ -5,15 +5,15 @@ from app.models.Product import Product
 from app.models.Variant import Variant
 
 
-def migration():
-
+def clearDB():
    engine = createEngine()
-
-   SQLModel.metadata.create_all(engine)
    
-
+   SQLModel.metadata.drop_all(engine)
    
-
-
+def mainDrop():
+   resp = input("are you sure to drop the db?? s/N: ")
+   if resp == "s":
+      clearDB()
+      
 if __name__ == "__main__":
-   migration()
+   mainDrop()

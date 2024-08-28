@@ -13,4 +13,4 @@ class Variant(SQLModel, table=True):
    type: str
    created_at: datetime
    updated_at: datetime
-   config_attributes: Optional[dict] = Field(default_factory=JSONB)
+   config_attributes: Optional[dict] = Field(sa_type=JSONB)
