@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import JSONB
 from decimal import Decimal
@@ -13,4 +13,4 @@ class Variant(SQLModel, table=True):
    type: str
    created_at: datetime
    updated_at: datetime
-   config_attributes: Optional[dict] = Field(sa_type=JSONB)
+   config_attributes: Optional[List[dict]] = Field(sa_type=JSONB)

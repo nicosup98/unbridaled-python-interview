@@ -6,14 +6,13 @@ from .variant import createVariant
 from app.schemas.Product import validateProduct, ProductBody
 
 def createProduct(session: Session, product: ProductBody ):
-   
+   session.begin()
    try:
       validateProduct(product)
    except ValidationError:
       return JSONResponse(content={"error":"an error occurred during product validation"},status_code=400)
    else:
       p = Product()
-      
       p.name = product.name
       p.is_producible = product.is_producible
       p.is_purchasable = product.is_purchasable
@@ -29,17 +28,19 @@ def createProduct(session: Session, product: ProductBody ):
 
       session.add(p)
       session.commit()
+      
       variants = []
       #posible refactor: make this async
       for v in product.variants:
          resp = createVariant(session,v,p.id)
-         
          if isinstance(resp,JSONResponse):
+            session.rollback()
             return resp
-         variants.append(resp.model_dump())
-      
-      productResponse = p.model_dump()
+         variants.append(resp)
+      product.id = p.id
+      productResponse = product.model_dump()
       productResponse["variants"] = variants
       productResponse["created_at"] = p.created_at
       productResponse["updated_at"] = p.updated_at
+      session.close()
       return productResponse

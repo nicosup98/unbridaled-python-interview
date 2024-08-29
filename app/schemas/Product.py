@@ -13,7 +13,7 @@ class Product(BaseModel):
    is_purchasable: bool
    type: str 
    purchase_uom: str
-   purchase_uom_conversion_rate: float
+   purchase_uom_conversion_rate: Decimal
    batch_tracked: bool
    additional_info: str
    
