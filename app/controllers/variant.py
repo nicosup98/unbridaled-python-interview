@@ -5,10 +5,6 @@ from datetime import datetime
 from sqlmodel import Session
 
 def createVariant(session: Session, variant: Variant, productId: int):
-   if variant.sales_price is None:
-      return JSONResponse(content={"error":"sales_price in variant not defined"},status_code=400)
-   
-   
    v = VariantModel()
    v.sku = variant.sku
    v.sales_price = variant.sales_price
@@ -18,8 +14,14 @@ def createVariant(session: Session, variant: Variant, productId: int):
    v.purchase_price = variant.purchase_price
    v.created_at = datetime.now()
    v.updated_at = datetime.now()
+   variantResponse = v.model_dump()
    
-   session.add(v)
-   
-   return v
+   try:
+      session.add(v)
+      session.commit()
+   except:
+      return JSONResponse(content={"error":f"an error ocurred creating the variant {v.sku}"},status_code=400)    
+   else:
+      variantResponse["id"] = v.id
+      return variantResponse
    
